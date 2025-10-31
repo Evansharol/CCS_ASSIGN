@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block content %}
+  <div class="card mx-auto" style="max-width:640px;">
+    <div class="card-body">
+      <h3 class="card-title">Register</h3>
+      {% if not qr_b64 %}
+      <form method="post">
+        <div class="mb-3">
+          <label class="form-label">Username</label>
+          <input name="username" class="form-control" required>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Password</label>
+          <input type="password" name="password" class="form-control" required>
+          <div class="form-text">Minimum 8 characters.</div>
+        </div>
+        <button class="btn btn-primary">Register</button>
+      </form>
+      {% else %}
+        <p>Registered <strong>{{ username }}</strong>.</p>
+        <p>Scan this QR code with Google Authenticator (or enter the manual secret below):</p>
+        <img src="data:image/png;base64,{{ qr_b64 }}" alt="qr"><br><br>
+        {% if otp_secret %}
+          <p><strong>Manual secret (dev):</strong> {{ otp_secret }}</p>
+        {% endif %}
+        <a class="btn btn-success" href="/login">Proceed to login</a>
+      {% endif %}
+    </div>
+  </div>
+{% endblock %}
