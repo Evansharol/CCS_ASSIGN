@@ -1,0 +1,279 @@
+#root{
+  --bg: #0f1724;
+  --card: #0b1220;
+  --muted: #9aa4b2;
+  --accent: #6c8cff;
+  --accent-2: #61dafb;
+  --success: #24c27a;
+  --danger: #ff6b6b;
+  --glass: rgba(255,255,255,0.03);
+}
+
+*{box-sizing:border-box}
+html, body{
+  height:100%;
+}
+
+html{
+  /* ensure the root element shows the same background so no white area appears behind large shadows */
+  background: linear-gradient(180deg,#071029 0%, #07162a 60%);
+}
+
+body{
+  margin:0;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  background: transparent; /* root gradient is on html now */
+  color:#e6eef8;
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+  /* prevent accidental horizontal overflow from wide fixed elements */
+  overflow-x: hidden;
+}
+
+/* Center the whole app in the viewport */
+html, body {
+  height: 100%;
+}
+body {
+  display: flex;
+  justify-content: center; /* center horizontally */
+  align-items: flex-start; /* keep content near top */
+  padding-top: 10px;
+}
+
+.app{
+  max-width:1200px;
+  margin:28px 0 60px 0;
+  padding:18px 28px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  width:100%;
+}
+
+.header{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  margin-bottom:22px;
+  text-align:center;
+}
+
+.header h1{
+  margin:0;
+  font-size:2rem;
+  letter-spacing: -0.6px;
+  font-weight:700;
+  color: #eaf1ff;
+}
+
+.intro{
+  color:var(--muted);
+  font-size:0.98rem;
+  max-width:900px;
+}
+
+.grid{
+  display:grid;
+  /* responsive two-column layout: each column grows but won't force horizontal scroll */
+  grid-template-columns: repeat(2, minmax(300px, 1fr));
+  gap:36px;
+  margin-top:20px;
+  width:100%;
+  max-width:1200px;
+  box-sizing:border-box;
+  justify-content:center;
+  justify-items:stretch;
+}
+
+.box{
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.015));
+  border: 1px solid rgba(255,255,255,0.04);
+  padding:22px;
+  border-radius:14px;
+  /* reduce shadow and use inset hint to avoid large visible drop under the card */
+  box-shadow: 0 6px 18px rgba(3,10,25,0.28), inset 0 1px 0 rgba(255,255,255,0.01);
+  width:100%;
+  max-width:680px;
+  min-height:420px;
+}
+
+/* Make the left (Register) box visually shorter to reduce vertical footprint */
+.grid > .box:first-child{
+  min-height:300px;
+}
+
+/* Enhanced input panel that groups all input controls */
+.form-panel{
+  background: linear-gradient(180deg, rgba(255,255,255,0.012), rgba(255,255,255,0.008));
+  border-radius:12px;
+  padding:18px;
+  border:1px solid rgba(255,255,255,0.03);
+  max-width:100%;
+}
+
+/* Responsive: fall back to flexible columns on smaller screens */
+@media (max-width:1500px) {
+  .grid{ grid-template-columns: repeat(2, minmax(340px, 640px)); }
+  .box{ width:100%; max-width:640px; min-height:auto }
+}
+
+@media (max-width:880px){
+  .grid{ grid-template-columns: 1fr }
+  .header{ flex-direction:column; align-items:center }
+}
+.form-panel h3{
+  margin:0 0 10px 0;
+  font-size:1rem;
+  color:#eaf1ff;
+}
+.input-row{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  margin:10px 0;
+}
+.input-icon{
+  width:42px;
+  height:42px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:10px;
+  background: rgba(255,255,255,0.02);
+  border:1px solid rgba(255,255,255,0.02);
+  color:var(--muted);
+  flex:0 0 42px;
+}
+.input-field{
+  flex:1 1 auto;
+}
+.input-field input{ width:100%; }
+
+.actions-row{ display:flex; gap:8px; margin-top:12px }
+
+/* subtle floating label effect */
+.floating{
+  position:relative;
+}
+.floating label{ position:absolute; left:12px; top:8px; font-size:0.78rem; color:var(--muted); pointer-events:none; transition: all .12s }
+.floating input{ padding-top:18px }
+.floating input:focus + label,
+.floating input:not(:placeholder-shown) + label{ top:-8px; left:10px; font-size:0.72rem; color:var(--accent-2) }
+
+form{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+}
+
+label{
+  display:flex;
+  flex-direction:column;
+  text-align:left;
+  font-size:0.9rem;
+  color:var(--muted);
+}
+
+input[type="text"], input[type="password"], input[type="email"]{
+  margin-top:6px;
+  padding:12px 14px;
+  height:44px;
+  border-radius:10px;
+  border:1px solid rgba(255,255,255,0.04);
+  background: rgba(255,255,255,0.018);
+  color:#d7e6ff;
+  outline:none;
+  transition: box-shadow .18s, border-color .14s, transform .08s;
+}
+
+input:focus{
+  border-color: rgba(108,140,255,0.95);
+  box-shadow: 0 8px 28px rgba(108,140,255,0.08);
+  color:#fff;
+  transform: translateY(-1px);
+}
+
+input::placeholder{ color: rgba(230,238,255,0.35); }
+
+button{
+  cursor:pointer;
+  padding:10px 16px;
+  border-radius:12px;
+  border: none;
+  background: linear-gradient(90deg,var(--accent), #8aa4ff);
+  color: #041124;
+  font-weight:700;
+  box-shadow: 0 10px 30px rgba(108,140,255,0.12);
+  transition: transform .12s ease, box-shadow .12s ease;
+}
+
+button:hover{ transform: translateY(-2px); }
+button:active{ transform: translateY(0px); }
+
+button.secondary{
+  background: transparent;
+  border:1px solid rgba(255,255,255,0.06);
+  color:var(--muted);
+  box-shadow:none;
+  padding:10px 14px;
+  border-radius:10px;
+}
+
+.qr-wrap{ display:flex; align-items:center; gap:12px; margin-top:10px }
+.qr-wrap img{ border-radius:8px; border:1px solid rgba(255,255,255,0.03); background:var(--glass) }
+
+.status pre{
+  margin:0;
+  padding:12px;
+  background: rgba(255,255,255,0.02);
+  border-radius:10px;
+  color:var(--muted);
+  font-size:0.9rem;
+}
+
+.result{
+  margin-top:10px;
+  display:flex;
+  gap:12px;
+  flex-wrap:wrap;
+}
+.pill{
+  background: rgba(255,255,255,0.03);
+  padding:10px 12px;
+  border-radius:999px;
+  color:var(--muted);
+  font-weight:700;
+}
+
+/* Password strength meter */
+.pw-meter{
+  margin-top:6px;
+}
+.pw-meter .bar{
+  height:10px;
+  background: rgba(255,255,255,0.03);
+  border-radius:999px;
+  overflow:hidden;
+}
+.pw-meter .fill{
+  height:100%;
+  width:0%;
+  transition: width .25s ease, background .25s ease;
+}
+.pw-weak{ background: linear-gradient(90deg,#ff7b7b,#ffb2a8); }
+.pw-medium{ background: linear-gradient(90deg,#ffcc66,#ffd88a); }
+.pw-strong{ background: linear-gradient(90deg,#6ce59b,#24c27a); }
+.pw-label{ margin-top:6px; font-size:0.85rem; color:var(--muted) }
+
+
+.success{ color: var(--success) }
+.danger{ color: var(--danger) }
+
+@media (max-width:880px){
+  .grid{ grid-template-columns: 1fr }
+  .header{ flex-direction:column; align-items:center }
+}
+
