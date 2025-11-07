@@ -10,6 +10,7 @@ function App() {
   const [password, setPassword] = useState('')
   const [pwScore, setPwScore] = useState(0)
   const [pwFeedback, setPwFeedback] = useState('')
+  const [allowWeak, setAllowWeak] = useState(false)
   const [status, setStatus] = useState('')
   const [otpPreview, setOtpPreview] = useState(null)
   const [otpCode, setOtpCode] = useState('')
@@ -22,7 +23,7 @@ function App() {
     // client-side validation
     const emailOk = validateEmail(email)
     if (!emailOk) { setStatus('Invalid email format'); return }
-    if (pwScore < 2) { setStatus('Password too weak — choose a stronger password'); return }
+  if (!allowWeak && pwScore < 2) { setStatus('Password too weak — choose a stronger password (or enable "Allow weak password")'); return }
     setStatus('Registering...')
     try {
       const res = await fetch(`${API}/register`, {
@@ -176,10 +177,16 @@ function App() {
 
                   <div className="input-row">
                     <div className="input-icon">🔒</div>
-                    <div className="input-field floating">
+                    <div className="input-field floating" style={{flex:1}}>
                       <input type="password" value={password} onChange={e=>onPasswordChange(e.target.value)} placeholder=" " />
                       <label>Create password</label>
                     </div>
+                  </div>
+
+                  {/* Checkbox below the password field, aligned with the input (offset by icon width) */}
+                  <div style={{display:'flex', alignItems:'center', gap:8, marginTop:10, marginLeft:54}}>
+                    <input type="checkbox" id="allowWeak" checked={allowWeak} onChange={e=>setAllowWeak(e.target.checked)} />
+                    <label htmlFor="allowWeak" style={{color:'var(--muted)'}}>Allow weak password (demo only)</label>
                   </div>
 
                   <div className="pw-meter">

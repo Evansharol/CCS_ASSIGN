@@ -60,6 +60,16 @@ export async function crackHash(targetHash, opts = {}) {
       }
     }
 
+    // If we made zero attempts due to very restrictive options, do one safe attempt so the caller sees at least one guess.
+    if (attempts === 0) {
+      attempts++;
+      const pw = commonPasswords[0];
+      if (fastHash(pw, options.fastSalt) === targetHash) {
+        return { found: true, guess: pw, attempts, durationMs: Date.now() - start };
+      }
+      return { found: false, attempts, durationMs: Date.now() - start };
+    }
+
     return { found: false, attempts, durationMs: Date.now() - start };
   }
 
@@ -106,6 +116,16 @@ export async function crackHash(targetHash, opts = {}) {
       }
       if (pos < 0) break; // exhausted this length
     }
+  }
+
+  // If we made zero attempts due to very restrictive options, do one safe attempt so the caller sees at least one guess.
+  if (attempts === 0) {
+    attempts++;
+    const pw = commonPasswords[0];
+    if (await bcrypt.compare(pw, targetHash)) {
+      return { found: true, guess: pw, attempts, durationMs: Date.now() - start };
+    }
+    return { found: false, attempts, durationMs: Date.now() - start };
   }
 
   return { found: false, attempts, durationMs: Date.now() - start };
